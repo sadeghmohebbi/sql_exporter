@@ -9,7 +9,6 @@ RUN make
 
 # Make image and copy build sql_exporter
 FROM        quay.io/prometheus/busybox:glibc
-MAINTAINER  The Prometheus Authors <prometheus-developers@googlegroups.com>
 COPY        --from=builder /go/src/github.com/free/sql_exporter/sql_exporter  /bin/sql_exporter
 
 EXPOSE      9399
