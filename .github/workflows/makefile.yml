@@ -7,19 +7,17 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  build-and-release:
     runs-on: ubuntu-latest
     container:
       image: quay.io/prometheus/golang-builder
-
     steps:
     - uses: actions/checkout@v4
-
+    
     - name: Install dependencies
       run: make
 
     - name: Upload a Build Artifact
-    - uses: actions/upload-artifact@v4.3.6
+      uses: actions/upload-artifact@v4.3.6
       with:
         path: ./sql_exporter
