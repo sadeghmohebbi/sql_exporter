@@ -59,7 +59,7 @@ func (d Date) String() string {
 
 // IsValid reports whether the date is valid.
 func (d Date) IsValid() bool {
-	return DateOf(d.In(time.UTC)) == d
+	return DateOf(d.In(time.Local)) == d
 }
 
 // In returns the time corresponding to time 00:00:00 of the date in the location.
@@ -79,7 +79,7 @@ func (d Date) In(loc *time.Location) time.Time {
 // AddDays returns the date that is n days in the future.
 // n can also be negative to go into the past.
 func (d Date) AddDays(n int) Date {
-	return DateOf(d.In(time.UTC).AddDate(0, 0, n))
+	return DateOf(d.In(time.Local).AddDate(0, 0, n))
 }
 
 // DaysSince returns the signed number of days between the date and s, not including the end day.
@@ -87,7 +87,7 @@ func (d Date) AddDays(n int) Date {
 func (d Date) DaysSince(s Date) (days int) {
 	// We convert to Unix time so we do not have to worry about leap seconds:
 	// Unix time increases by exactly 86400 seconds per day.
-	deltaUnix := d.In(time.UTC).Unix() - s.In(time.UTC).Unix()
+	deltaUnix := d.In(time.Local).Unix() - s.In(time.Local).Unix()
 	return int(deltaUnix / 86400)
 }
 
@@ -171,7 +171,7 @@ func (t Time) String() string {
 // IsValid reports whether the time is valid.
 func (t Time) IsValid() bool {
 	// Construct a non-zero time.
-	tm := time.Date(2, 2, 2, t.Hour, t.Minute, t.Second, t.Nanosecond, time.UTC)
+	tm := time.Date(2, 2, 2, t.Hour, t.Minute, t.Second, t.Nanosecond, time.Local)
 	return TimeOf(tm) == t
 }
 
@@ -254,7 +254,7 @@ func (dt DateTime) In(loc *time.Location) time.Time {
 
 // Before reports whether dt1 occurs before dt2.
 func (dt1 DateTime) Before(dt2 DateTime) bool {
-	return dt1.In(time.UTC).Before(dt2.In(time.UTC))
+	return dt1.In(time.Local).Before(dt2.In(time.Local))
 }
 
 // After reports whether dt1 occurs after dt2.

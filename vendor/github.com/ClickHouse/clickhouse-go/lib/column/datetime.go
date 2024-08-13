@@ -78,6 +78,6 @@ func (dt *DateTime) parse(value string) (int64, error) {
 		time.Time(tv).Hour(),
 		time.Time(tv).Minute(),
 		time.Time(tv).Second(),
-		0, time.UTC,
+		0, time.Local,
 	).Unix(), nil
 }

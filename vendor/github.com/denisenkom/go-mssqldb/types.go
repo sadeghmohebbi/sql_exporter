@@ -255,13 +255,13 @@ func decodeDateTim4(buf []byte) time.Time {
 	days := binary.LittleEndian.Uint16(buf)
 	mins := binary.LittleEndian.Uint16(buf[2:])
 	return time.Date(1900, 1, 1+int(days),
-		0, int(mins), 0, 0, time.UTC)
+		0, int(mins), 0, 0, time.Local)
 }
 
 func encodeDateTim4(val time.Time) (buf []byte) {
 	buf = make([]byte, 4)
 
-	ref := time.Date(1900, 1, 1, 0, 0, 0, 0, time.UTC)
+	ref := time.Date(1900, 1, 1, 0, 0, 0, 0, time.Local)
 	dur := val.Sub(ref)
 	days := dur / (24 * time.Hour)
 	mins := val.Hour()*60 + val.Minute()
@@ -306,7 +306,7 @@ func decodeDateTime(buf []byte) time.Time {
 	ns := int(math.Trunc(float64(tm%300)/0.3+0.5)) * 1000000
 	secs := int(tm / 300)
 	return time.Date(1900, 1, 1+int(days),
-		0, 0, secs, ns, time.UTC)
+		0, 0, secs, ns, time.Local)
 }
 
 func readFixedType(ti *typeInfo, r *tdsBuffer) interface{} {
@@ -856,7 +856,7 @@ func decodeDateInt(buf []byte) (days int) {
 }
 
 func decodeDate(buf []byte) time.Time {
-	return time.Date(1, 1, 1+decodeDateInt(buf), 0, 0, 0, 0, time.UTC)
+	return time.Date(1, 1, 1+decodeDateInt(buf), 0, 0, 0, 0, time.Local)
 }
 
 func encodeDate(val time.Time) (buf []byte) {
@@ -908,7 +908,7 @@ func encodeTimeInt(seconds, ns, scale int, buf []byte) {
 
 func decodeTime(scale uint8, buf []byte) time.Time {
 	sec, ns := decodeTimeInt(scale, buf)
-	return time.Date(1, 1, 1, 0, 0, sec, ns, time.UTC)
+	return time.Date(1, 1, 1, 0, 0, sec, ns, time.Local)
 }
 
 func encodeTime(hour, minute, second, ns, scale int) (buf []byte) {
@@ -922,7 +922,7 @@ func decodeDateTime2(scale uint8, buf []byte) time.Time {
 	timesize := len(buf) - 3
 	sec, ns := decodeTimeInt(scale, buf[:timesize])
 	days := decodeDateInt(buf[timesize:])
-	return time.Date(1, 1, 1+days, 0, 0, sec, ns, time.UTC)
+	return time.Date(1, 1, 1+days, 0, 0, sec, ns, time.Local)
 }
 
 func encodeDateTime2(val time.Time, scale int) (buf []byte) {
@@ -950,7 +950,7 @@ func decodeDateTimeOffset(scale uint8, buf []byte) time.Time {
 func encodeDateTimeOffset(val time.Time, scale int) (buf []byte) {
 	timesize := calcTimeSize(scale)
 	buf = make([]byte, timesize+2+3)
-	days, seconds, ns := dateTime2(val.In(time.UTC))
+	days, seconds, ns := dateTime2(val.In(time.Local))
 	encodeTimeInt(seconds, ns, scale, buf)
 	buf[timesize] = byte(days)
 	buf[timesize+1] = byte(days >> 8)

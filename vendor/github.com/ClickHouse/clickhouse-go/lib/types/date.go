@@ -9,7 +9,7 @@ import (
 
 // Truncate timezone
 //
-//   clickhouse.Date(time.Date(2017, 1, 1, 0, 0, 0, 0, time.Local)) -> time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)
+//   clickhouse.Date(time.Date(2017, 1, 1, 0, 0, 0, 0, time.Local)) -> time.Date(2017, 1, 1, 0, 0, 0, 0, time.Local)
 type Date time.Time
 
 func (date Date) Value() (driver.Value, error) {
@@ -17,12 +17,12 @@ func (date Date) Value() (driver.Value, error) {
 }
 
 func (date Date) convert() time.Time {
-	return time.Date(time.Time(date).Year(), time.Time(date).Month(), time.Time(date).Day(), 0, 0, 0, 0, time.UTC)
+	return time.Date(time.Time(date).Year(), time.Time(date).Month(), time.Time(date).Day(), 0, 0, 0, 0, time.Local)
 }
 
 // Truncate timezone
 //
-//   clickhouse.DateTime(time.Date(2017, 1, 1, 0, 0, 0, 0, time.Local)) -> time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)
+//   clickhouse.DateTime(time.Date(2017, 1, 1, 0, 0, 0, 0, time.Local)) -> time.Date(2017, 1, 1, 0, 0, 0, 0, time.Local)
 type DateTime time.Time
 
 func (datetime DateTime) Value() (driver.Value, error) {
@@ -38,7 +38,7 @@ func (datetime DateTime) convert() time.Time {
 		time.Time(datetime).Minute(),
 		time.Time(datetime).Second(),
 		1,
-		time.UTC,
+		time.Local,
 	)
 }
 

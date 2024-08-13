@@ -67,7 +67,7 @@ type Config struct {
 func NewConfig() *Config {
 	return &Config{
 		Collation:            defaultCollation,
-		Loc:                  time.UTC,
+		Loc:                  time.Local,
 		MaxAllowedPacket:     defaultMaxAllowedPacket,
 		AllowNativePasswords: true,
 	}
@@ -249,7 +249,7 @@ func (cfg *Config) FormatDSN() string {
 		}
 	}
 
-	if cfg.Loc != time.UTC && cfg.Loc != nil {
+	if cfg.Loc != time.Local && cfg.Loc != nil {
 		if hasParam {
 			buf.WriteString("&loc=")
 		} else {

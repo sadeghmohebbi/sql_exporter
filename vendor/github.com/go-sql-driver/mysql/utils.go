@@ -120,7 +120,7 @@ func parseDateTime(str string, loc *time.Location) (t time.Time, err error) {
 	}
 
 	// Adjust location
-	if err == nil && loc != time.UTC {
+	if err == nil && loc != time.Local {
 		y, mo, d := t.Date()
 		h, mi, s := t.Clock()
 		t, err = time.Date(y, mo, d, h, mi, s, t.Nanosecond(), loc), nil

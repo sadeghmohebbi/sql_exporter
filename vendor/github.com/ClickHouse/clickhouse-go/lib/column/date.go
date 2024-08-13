@@ -75,6 +75,6 @@ func (dt *Date) parse(value string) (int64, error) {
 		time.Time(tv).Year(),
 		time.Time(tv).Month(),
 		time.Time(tv).Day(),
-		0, 0, 0, 0, time.UTC,
+		0, 0, 0, 0, time.Local,
 	).Unix(), nil
 }
